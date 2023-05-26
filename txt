@@ -1,0 +1,7 @@
+- client gửi req lên server:
+- controller xử lý: validate dữ liệu
+- controller truyền dữ liệu đến repo
+
+
+ event emitter : khi req hay sự kiện nào đó xảy ra thì nó sẽ thông báo
+ để func hay sẽ xử lý điều gì đó
