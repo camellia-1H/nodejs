@@ -20,10 +20,10 @@ const login = async (req, res) => {
 
   // call repo
   try {
-    await userRepo.login({ email, password });
+    let existedUser = await userRepo.login({ email, password });
     res.status(HttpStatusCode.OK).json({
       message: "Login user success",
-      data: " detail user",
+      data: existedUser,
     });
   } catch (exception) {
     res.status(HttpStatusCode.INTERNAL_SERVER_ERROR).json({

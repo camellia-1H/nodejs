@@ -1,4 +1,6 @@
 import express from "express";
+import studentController from "../controllers/studentController.js";
+
 const router = express.Router();
 
 router.get("/", (req, res) => {
@@ -15,8 +17,6 @@ router.patch("/", (req, res) => {
   res.send("create new obj if not exist when update student");
 });
 
-router.post("/", (req, res) => {
-  res.send("insert student");
-});
+router.post("/", studentController.insertStudent);
 
 export default router;

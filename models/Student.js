@@ -26,17 +26,20 @@ export default mongoose.model(
       required: true,
     },
     languages: {
-      type: [String],
+      type: String,
     },
     gender: {
       type: String,
-      enum: {
-        values: ["Male, Female"],
-        message: "{VALUE} is not suppport",
-      },
+      // enum: {
+      //   values: ["Male, Female"],
+      //   message: "{VALUE} is not suppport",
+      // },
       required: true,
     },
     phoneNumber: {
+      type: String,
+    },
+    address: {
       type: String,
     },
   })
