@@ -2,11 +2,15 @@ import { configureStore } from "@reduxjs/toolkit";
 import userSlice from "./userSlice";
 import authSlice from "./authSlice";
 
+// const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+
 export const store = configureStore({
   reducer: {
     users: userSlice.reducer,
     auth: authSlice.reducer,
   },
+  // devTools: [devToolsEnhancer({ realtime: true })],
+  devTools: true,
 });
 
 // Infer the `RootState` and `AppDispatch` types from the store itself

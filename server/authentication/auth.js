@@ -13,7 +13,7 @@ export default function checkToken(req, res, next) {
 
   // req khac
   // phải kiểm tra token
-  const token = req.headers?.authorization?.split(" ")[1];
+  const token = req.headers?.token?.split(" ")[1];
   console.log(token);
   //check token còn hạn khong
   try {

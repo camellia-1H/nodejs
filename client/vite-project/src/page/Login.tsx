@@ -1,7 +1,9 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
 import HomePage from "./HomePage";
-import { axiosInstance } from "../api/axiosInstance";
+import { loginUser } from "../api/request";
+import { loginFailed, loginSuccess } from "../redux/authSlice";
 
 function Login() {
   const [email, setEmail] = useState<string>("");
@@ -9,29 +11,18 @@ function Login() {
   const [isShow, setShow] = useState<boolean>(false);
 
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const login = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
-      const result = await fetch("http://localhost:8080/users/login", {
-        method: "POST",
-        body: JSON.stringify({ email, password }),
-        headers: { "Content-Type": "application/json" },
-      });
-      const data = await result.json();
-
-      if (result.ok) {
-        setShow(false);
-        navigate("/", {
-          state: {
-            user: data.data,
-          },
-        });
-      } else {
-        setShow(true);
-      }
+      const data = await loginUser(email, password);
+      dispatch(loginSuccess(data));
+      setShow(false);
+      navigate("/");
     } catch (error) {
-      alert("khong the dang ki user nay");
+      dispatch(loginFailed());
+      setShow(true);
     }
   };
   const navRegister = () => {

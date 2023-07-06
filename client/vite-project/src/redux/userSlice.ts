@@ -1,10 +1,11 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { User } from "../types/User";
 
 const userSlice = createSlice({
   name: "users",
   initialState: {
     users: {
-      allUser: null,
+      allUser: <User[]>[],
       error: false,
     },
     msg: "",

@@ -1,6 +1,9 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
 import HomePage from "./HomePage";
+import { registerUser } from "../api/request";
+import { registerFailed, registerSuccess } from "../redux/authSlice";
 
 function Register() {
   const [name, setName] = useState<string>("");
@@ -10,24 +13,18 @@ function Register() {
   const [isShow, setShow] = useState<boolean>(false);
 
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const register = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    try {
-      const result = await fetch("http://localhost:8080/users/register", {
-        method: "POST",
-        body: JSON.stringify({ name, email, password, phoneNumber }),
-        headers: { "Content-Type": "application/json" },
-      });
 
-      if (result.ok) {
-        setShow(false);
-        navigate("/login");
-      } else {
-        setShow(true);
-      }
-    } catch (error) {
-      alert("khong the dang ki user nay");
+    const result = await registerUser(name, email, password, phoneNumber);
+    if (result) {
+      dispatch(registerSuccess());
+      navigate("/login");
+    } else {
+      dispatch(registerFailed());
+      setShow(true);
     }
   };
   const navLogin = () => {
@@ -72,7 +69,7 @@ function Register() {
             className="w-8/12 p-1 rounded-2xl my-3 shadow-lg shadow-amber-600-500/50 focus:outline-none"
           />
           {isShow ? (
-            <p className="text-red-900">Sai tên tài khoản hoặc mật khẩu</p>
+            <p className="text-red-900">Tên tài khoản đã tồn tại</p>
           ) : (
             <p></p>
           )}
