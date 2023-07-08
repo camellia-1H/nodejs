@@ -7,12 +7,14 @@ import { getAllUser, logOut } from "../api/request";
 import { getAllUserSuccess } from "../redux/userSlice";
 import { logOutFailed, logOutSuccess } from "../redux/authSlice";
 import ListUser from "../components/ListUser";
+import { createAxiosJWT } from "../api/axiosInstance";
 
 function HomePage() {
   const user = useSelector((state: RootState) => state.auth.login?.currentUser);
   const email = useSelector(
     (state: RootState) => state.auth.login?.currentUser.data?.email
   );
+  // const axiosJWT = createAxiosJWT(user);
   const navigate = useNavigate();
   const dispatch = useDispatch();
 

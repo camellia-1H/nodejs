@@ -1,3 +1,4 @@
+import { AxiosInstance } from "axios";
 import { axiosInstance } from "./axiosInstance";
 
 const loginUser = async (email: string, password: string) => {
@@ -33,9 +34,9 @@ const registerUser = async (
   }
 };
 
-const getAllUser = async (accessToken: string) => {
+const getAllUser = async (accessToken: string, axiosJWT: AxiosInstance) => {
   try {
-    const res = await axiosInstance.get("/users", {
+    const res = await axiosJWT.get("/users", {
       headers: { token: `Bearer ${accessToken}` },
     });
     // console.log(res.data);
@@ -55,4 +56,15 @@ const logOut = async (accessToken: string, id: string) => {
   }
 };
 
-export { loginUser, registerUser, getAllUser, logOut };
+const refreshToken = async () => {
+  try {
+    const res = await axiosInstance.post("/users/refresh", {
+      withCredentials: true,
+    });
+    return res.data;
+  } catch (e) {
+    console.log(e);
+  }
+};
+
+export { loginUser, registerUser, getAllUser, logOut, refreshToken };
