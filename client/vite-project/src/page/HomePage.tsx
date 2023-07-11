@@ -12,9 +12,11 @@ import { createAxiosJWT } from "../api/axiosInstance";
 function HomePage() {
   const user = useSelector((state: RootState) => state.auth.login?.currentUser);
   const email = useSelector(
-    (state: RootState) => state.auth.login?.currentUser.data?.email
+    (state: RootState) => state.auth.login?.currentUser.email
   );
-  // const axiosJWT = createAxiosJWT(user);
+  const allUser = useSelector((state: RootState) => state.users.users.allUser);
+
+  const axiosJWT = createAxiosJWT(user);
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -24,9 +26,9 @@ function HomePage() {
     // if (!!user) {
     //   navigate("/login");
     // }
-    if (user?.data?.accessToken) {
+    if (user?.accessToken) {
       const ngu = async () => {
-        const data = await getAllUser(user?.data?.accessToken);
+        const data = await getAllUser(user?.accessToken, axiosJWT);
         dispatch(getAllUserSuccess(data.data));
       };
       ngu();
@@ -35,7 +37,7 @@ function HomePage() {
 
   const handleLogOut = () => {
     try {
-      logOut(user?.data?.accessToken, email);
+      logOut(user?.accessToken, email);
       dispatch(logOutSuccess());
       navigate("/login");
     } catch (error) {
@@ -49,14 +51,14 @@ function HomePage() {
           Home Page
         </Link>
 
-        {user?.data?.accessToken ? (
+        {user?.accessToken ? (
           <div className="w-10 flex justify-end ">
             <img
               className="block w-full rounded-full"
               src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQd1JskIyepRMHPJtI3edrls-5Mi8D6Uow4mA&usqp=CAU"
               alt=""
             />
-            <span>{user?.data?.name}</span>
+            <span>{user?.name}</span>
 
             <button
               onClick={handleLogOut}
@@ -83,7 +85,7 @@ function HomePage() {
         )}
       </div>
 
-      {user?.data?.accessToken && <ListUser />}
+      {user?.accessToken && <ListUser allUser={allUser} />}
     </div>
   );
 }

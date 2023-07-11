@@ -37,7 +37,7 @@ const registerUser = async (
 const getAllUser = async (accessToken: string, axiosJWT: AxiosInstance) => {
   try {
     const res = await axiosJWT.get("/users", {
-      headers: { token: `Bearer ${accessToken}` },
+      headers: { Authorization: `Bearer ${accessToken}` },
     });
     // console.log(res.data);
     return res.data;
@@ -49,7 +49,7 @@ const getAllUser = async (accessToken: string, axiosJWT: AxiosInstance) => {
 const logOut = async (accessToken: string, id: string) => {
   try {
     await axiosInstance.post("/users/logout", id, {
-      headers: { token: `Bearer ${accessToken}` },
+      headers: { Authorization: `Bearer ${accessToken}` },
     });
   } catch (error) {
     console.log(error);

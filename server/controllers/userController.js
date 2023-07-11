@@ -29,8 +29,8 @@ const login = async (req, res) => {
     });
     const { accessToken, refreshToken, ...others } = existedUser;
     res.status(HttpStatusCode.OK).json({
-      message: "Login user success",
-      data: { ...others, accessToken },
+      ...others,
+      accessToken,
     });
   } catch (exception) {
     res.status(HttpStatusCode.INTERNAL_SERVER_ERROR).json({

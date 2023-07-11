@@ -1,8 +1,9 @@
-import { useSelector } from "react-redux";
-import { RootState } from "../redux/store";
+import { User } from "../types/User";
+type userType = {
+  allUser: User[];
+};
 
-function ListUser() {
-  const allUser = useSelector((state: RootState) => state.users.users.allUser);
+function ListUser({ allUser }: userType) {
   return (
     <div>
       {allUser.map((user, index) => (

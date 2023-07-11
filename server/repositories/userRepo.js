@@ -15,7 +15,8 @@ const login = async ({ email, password }) => {
         process.env.JWT_SECRET,
         {
           // expiresIn: "6000000",
-          expiresIn: "10 days",
+          // expiresIn: "10 days",
+          expiresIn: "10s",
         }
       );
       const refreshToken = jwt.sign(

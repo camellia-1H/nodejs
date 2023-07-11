@@ -1,13 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-type User = {
-  data: {
-    name: string;
-    email: string;
-    password?: string;
-    phoneNumber: string;
-    accessToken: string;
-  };
-};
+import { User } from "../types/User";
 
 const authSlice = createSlice({
   name: "auth",
