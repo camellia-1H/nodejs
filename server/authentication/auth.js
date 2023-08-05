@@ -5,8 +5,11 @@ export default function checkToken(req, res, next) {
   // req bypass login, register
   if (
     req.url.toLowerCase().trim() == "/users/login".toLowerCase().trim() ||
+    req.url.toLowerCase().trim() == "/users/refresh".toLowerCase().trim() ||
     req.url.toLowerCase().trim() == "/users/register".toLowerCase().trim()
   ) {
+    const refreshToken = req.cookies?.refreshToken;
+    console.log("auth refresh next ", refreshToken);
     next();
     return;
   }
@@ -15,8 +18,10 @@ export default function checkToken(req, res, next) {
   // phải kiểm tra token
   // const token = req.headers?.token?.split(" ")[1];
   const token = req.headers?.authorization?.split(" ")[1];
+  const refreshToken = req.cookies?.refreshToken;
 
-  console.log(token);
+  console.log("auth", token);
+  console.log("auth refresh ", refreshToken);
   //check token còn hạn khong
   try {
     const jwtObj = jwt.verify(token, process.env.JWT_SECRET);
@@ -26,7 +31,7 @@ export default function checkToken(req, res, next) {
       res.status(HttpStatusCode.BAD_REQUEST).json({
         message: "Token het han roi",
       });
-      res.end();
+      // res.end();
     } else {
       next();
     }

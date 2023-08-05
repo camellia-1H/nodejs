@@ -4,7 +4,6 @@ import { RootState } from "../redux/store";
 import { useEffect } from "react";
 
 import { getAllUser, logOut } from "../api/request";
-import { getAllUserSuccess } from "../redux/userSlice";
 import { logOutFailed, logOutSuccess } from "../redux/authSlice";
 import ListUser from "../components/ListUser";
 import { createAxiosJWT } from "../api/axiosInstance";
@@ -16,24 +15,17 @@ function HomePage() {
   );
   const allUser = useSelector((state: RootState) => state.users.users.allUser);
 
-  const axiosJWT = createAxiosJWT(user);
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const axiosJWT = createAxiosJWT(user, dispatch);
 
   console.log(user);
 
   useEffect(() => {
-    // if (!!user) {
-    //   navigate("/login");
-    // }
     if (user?.accessToken) {
-      const ngu = async () => {
-        const data = await getAllUser(user?.accessToken, axiosJWT);
-        dispatch(getAllUserSuccess(data.data));
-      };
-      ngu();
+      getAllUser(user?.accessToken, axiosJWT, dispatch);
     }
-  }, []);
+  }, [user, allUser.length]);
 
   const handleLogOut = () => {
     try {

@@ -17,9 +17,20 @@ const userSlice = createSlice({
     getAllUserFailed: (state) => {
       state.users.error = true;
     },
+    deleteUserSuccess: (state, action) => {
+      state.msg = action.payload;
+    },
+    deleteUserFailed: (state, action) => {
+      state.msg = action.payload;
+    },
   },
 });
 
-export const { getAllUserSuccess, getAllUserFailed } = userSlice.actions;
+export const {
+  getAllUserSuccess,
+  getAllUserFailed,
+  deleteUserSuccess,
+  deleteUserFailed,
+} = userSlice.actions;
 
 export default userSlice;

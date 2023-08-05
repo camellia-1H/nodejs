@@ -8,7 +8,12 @@ import checkToken from "./authentication/auth.js";
 
 dotenv.config();
 const app = express();
-app.use(cors());
+app.use(
+  cors({
+    origin: true,
+    credentials: true,
+  })
+);
 app.use(cookieParser());
 // làm lấy ra được dữ liệu thì json()
 app.use(express.json());

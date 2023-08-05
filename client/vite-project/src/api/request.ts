@@ -1,5 +1,13 @@
 import { AxiosInstance } from "axios";
 import { axiosInstance } from "./axiosInstance";
+import { AnyAction } from "@reduxjs/toolkit";
+import { Dispatch } from "react";
+import {
+  deleteUserFailed,
+  deleteUserSuccess,
+  getAllUserSuccess,
+  getAllUserFailed,
+} from "../redux/userSlice";
 
 const loginUser = async (email: string, password: string) => {
   try {
@@ -34,15 +42,18 @@ const registerUser = async (
   }
 };
 
-const getAllUser = async (accessToken: string, axiosJWT: AxiosInstance) => {
+const getAllUser = async (
+  accessToken: string,
+  axiosJWT: AxiosInstance,
+  dispatch: Dispatch<AnyAction>
+) => {
   try {
     const res = await axiosJWT.get("/users", {
       headers: { Authorization: `Bearer ${accessToken}` },
     });
-    // console.log(res.data);
-    return res.data;
+    dispatch(getAllUserSuccess(res.data.data));
   } catch (error) {
-    console.log(error);
+    dispatch(getAllUserFailed());
   }
 };
 
@@ -53,6 +64,23 @@ const logOut = async (accessToken: string, id: string) => {
     });
   } catch (error) {
     console.log(error);
+  }
+};
+
+const deleteUser = async (
+  accessToken: string,
+  id: string,
+  axiosJWT: AxiosInstance,
+  dispatch: Dispatch<AnyAction>
+) => {
+  try {
+    const result = await axiosJWT.delete(`/users/delete/${id}`, {
+      headers: { Authorization: `Bearer ${accessToken}` },
+    });
+    dispatch(deleteUserSuccess(result.data));
+    getAllUser(accessToken, axiosJWT, dispatch);
+  } catch (error) {
+    dispatch(deleteUserFailed(error));
   }
 };
 
@@ -67,4 +95,11 @@ const refreshToken = async () => {
   }
 };
 
-export { loginUser, registerUser, getAllUser, logOut, refreshToken };
+export {
+  loginUser,
+  registerUser,
+  getAllUser,
+  logOut,
+  refreshToken,
+  deleteUser,
+};

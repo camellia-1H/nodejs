@@ -2,12 +2,16 @@ import axios from "axios";
 import jwt_decode, { JwtPayload } from "jwt-decode";
 import { User } from "../types/User";
 import { refreshToken } from "./request";
+import { Dispatch } from "react";
+import { AnyAction } from "@reduxjs/toolkit";
+import { loginSuccess } from "../redux/authSlice";
 
 export const axiosInstance = axios.create({
   baseURL: "http://localhost:8080/",
+  // withCredentials: true,
 });
 
-export const createAxiosJWT = (user: User) => {
+export const createAxiosJWT = (user: User, dispatch: Dispatch<AnyAction>) => {
   const newAxiosInstance = axios.create({
     baseURL: "http://localhost:8080/",
   });
@@ -21,9 +25,10 @@ export const createAxiosJWT = (user: User) => {
         console.log(data);
         const refreshUser = {
           ...user,
-          accessToken: data.accessToken,
+          accessToken: data?.accessToken,
         };
-        config.headers["token"] = `Bearer ${data.accessToken}`;
+        dispatch(loginSuccess(refreshUser));
+        config.headers["authorization"] = `Bearer ${data.accessToken}`;
       }
       return config;
     },

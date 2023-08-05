@@ -5,7 +5,7 @@ const router = express.Router();
 
 router.get("/", userController.getAllUser);
 
-router.get("/:id", userController.getDetailUser);
+router.delete("/delete/:id", userController.deleteUser);
 
 router.post("/login", userController.login);
 

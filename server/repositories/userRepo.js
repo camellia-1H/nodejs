@@ -16,7 +16,7 @@ const login = async ({ email, password }) => {
         {
           // expiresIn: "6000000",
           // expiresIn: "10 days",
-          expiresIn: "10s",
+          expiresIn: "30s",
         }
       );
       const refreshToken = jwt.sign(
@@ -79,16 +79,19 @@ const getAllUser = async () => {
     throw new Error("khong co list user");
   }
 };
-// const postBlog = async ({ title, content, image, email }) => {
-//   try {
-//     const post = await User.
-//   } catch (error) {
 
-//   }
-// };
+const deleteUser = async (id) => {
+  try {
+    const user = await User.deleteOne({ _id: id }).exec();
+    return user;
+  } catch {
+    throw new Error("khong co list user");
+  }
+};
 
 export default {
   login,
   register,
   getAllUser,
+  deleteUser,
 };
